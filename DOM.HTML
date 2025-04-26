@@ -1,0 +1,116 @@
+ <!-- //                ***ASSIGNMENT-2 ******(CREATE A TODO LIST USING DOM MANIPUALATION) -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO App</title>
+  </head>
+  <body>
+    <h2>Todo Application</h2>
+    <input type="text" id="title" placeholder="Todo title" /><br /><br />
+    <input type="text" id="description" placeholder="Todo description" /><br /><br />
+    <button onclick="addTodo()">Add todo</button>
+    <br /><br />
+    <div id="todos"></div>
+
+    <script>
+      let globalId = 1;
+      let todoState = [];
+
+      function addTodo() {
+        const title = document.getElementById("title").value;
+        const description = document.getElementById("description").value;
+
+        if (!title || !description) {
+          alert("Please fill in both fields.");
+          return;
+        }
+
+        todoState.push({
+          id: globalId++,
+          title,
+          description,
+          completed: false
+        });
+
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+
+        updateState();
+      }
+
+      function updateState() {
+        const todosDiv = document.getElementById("todos");
+        todosDiv.innerHTML = "";
+
+        todoState.forEach(todo => {
+          const todoDiv = document.createElement("div");
+          todoDiv.setAttribute("id", "todo-" + todo.id);
+
+          const title = document.createElement("div");
+          title.innerText = "Title: " + todo.title;
+          if (todo.completed) title.style.textDecoration = "line-through";
+
+          const description = document.createElement("div");
+          description.innerText = "Description: " + todo.description;
+          if (todo.completed) description.style.textDecoration = "line-through";
+
+          const doneButton = document.createElement("button");
+          doneButton.innerText = todo.completed ? "Done" : "Mark as Done";
+          doneButton.onclick = function () {
+            markAsDone(todo.id);
+          };
+
+          const editButton = document.createElement("button");
+          editButton.innerText = "Edit";
+          editButton.onclick = function () {
+            editTodo(todo.id);
+          };
+
+          const deleteButton = document.createElement("button");
+          deleteButton.innerText = "Delete";
+          deleteButton.onclick = function () {
+            deleteTodo(todo.id);
+          };
+
+          todoDiv.appendChild(title);
+          todoDiv.appendChild(description);
+          todoDiv.appendChild(doneButton);
+          todoDiv.appendChild(editButton);
+          todoDiv.appendChild(deleteButton);
+
+          todosDiv.appendChild(todoDiv);
+        });
+      }
+
+      function markAsDone(id) {
+        const todo = todoState.find(t => t.id === id);
+        if (todo) {
+          todo.completed = true;
+          updateState();
+        }
+      }
+
+      function editTodo(id) {
+        const todo = todoState.find(t => t.id === id);
+        if (todo) {
+          const newTitle = prompt("Edit title", todo.title);
+          const newDesc = prompt("Edit description", todo.description);
+          if (newTitle && newDesc) {
+            todo.title = newTitle;
+            todo.description = newDesc;
+            updateState();
+          }
+        }
+      }
+
+      function deleteTodo(id) {
+        const todoElement = document.getElementById("todo-" + id);
+        if (todoElement) {
+          todoElement.remove();
+        }
+        todoState = todoState.filter(t => t.id !== id);
+      }
+    </script>
+  </body>
+</html>

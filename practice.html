@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO App</title>
+</head>
+<body>
+    <h2>Todo Application</h2>
+    <input type="text" id = "title" placeholder = "Todo title"/> <br></br>
+    <input type="text" id ="description" placeholder = "Todo description"/> <br></br>
+    <button onclick = "addTodo ()"> Add todo</button>
+    <br></br>
+    <div id = "todos"></div>
+
+    <script> 
+
+    let globalId = 1;
+    let todoState = [];
+
+    function addTodo (){
+        const title = document.getElementById("title").value;
+        const description = documnet .getElementById ("description").value;
+
+
+        if(!title || description) {
+            alert ("please fill in both fields");
+            return ;
+        }
+        todoState.push ({
+            id : globalId++ ,
+            title ,
+            description ,
+            completed :false 
+        });
+
+        document.getElementById ("title").value = "";
+        document.getElementById ("description").value = "";
+
+        updateState ();
+    }
+    
+    function updateState () {
+        const todoDiv = document.getElementById("todos");
+        todoDiv.I
+    }
+    
+    </script>
+</body>
+</html>
